@@ -1,0 +1,11 @@
+table:
+  name: employee
+  schema: public
+array_relationships:
+  - name: attendances
+    using:
+      foreign_key_constraint_on:
+        column: employeeid
+        table:
+          name: attendance
+          schema: public
