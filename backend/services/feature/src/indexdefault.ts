@@ -1,5 +1,5 @@
-import express from 'express';
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer } from '@apollo/server';
+import { startStandaloneServer } from '@apollo/server/standalone';
 
 const books = [
     {
@@ -12,7 +12,7 @@ const books = [
     },
 ];
 
-// Resolvers define how to fetch the types defined in your schema.
+  // Resolvers define how to fetch the types defined in your schema.
 // This resolver retrieves books from the "books" array above.
 const resolvers = {
     Query: {
@@ -40,26 +40,19 @@ const typeDefs = `#graphql
   }
 `;
 
-const PORT = process.env.PORT || 9000;
-const HOST = process.env.HOST || "0.0.0.0";
-const ENV = process.env.NODE_ENV || "development";
-const app = express();
-
+// The ApolloServer constructor requires two parameters: your schema
+// definition and your set of resolvers.
 const server = new ApolloServer({
     typeDefs,
     resolvers,
 });
-
-app.get("/healthz", (req, res) => {res.status(200).send("OK")});
-
-const main = async() => {
-    await server.start();
-    app.use(express.json());
-    server.applyMiddleware({ app });
-}
-
-main().then(() => {
-    app.listen(PORT, () => {
-        console.log("Express server listening on %d, in %s mode", PORT, ENV);
-    })
-})
+  
+// Passing an ApolloServer instance to the `startStandaloneServer` function:
+//  1. creates an Express app
+//  2. installs your ApolloServer instance as middleware
+//  3. prepares your app to handle incoming requests
+const { url } = await startStandaloneServer(server, {
+listen: { port: 4000 },
+});
+  
+console.log(`🚀  Server ready at: ${url}`);

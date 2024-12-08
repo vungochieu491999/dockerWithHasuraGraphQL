@@ -1,0 +1,8 @@
+{
+    "exec": "ts-node ./src/index.ts",
+    "watch": [
+        "src/**/*.ts"
+    ],
+    "ext": "ts,json",
+    "delay": "3000"
+}

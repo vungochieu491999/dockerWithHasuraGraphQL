@@ -1,2 +1,2 @@
 local:
-	docker-compose -f .docker/docker-compose.local.yaml up --build
+	docker compose -f ./docker/docker-compose.local.yaml -p local-environment up -d
