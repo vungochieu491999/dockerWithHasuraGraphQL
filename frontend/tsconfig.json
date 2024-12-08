@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "es2017",
+            "esnext",
+            "dom"
+        ],
+        "module": "es2015",
+        "moduleResolution": "node",
+        "target": "es5",
+        "sourceMap": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "baseUrl": "src",
+        "paths": {
+        "root/*": [ "*" ]
+        },
+        "skipLibCheck": true
+    },
+    "exclude": [
+      "node_modules"
+    ]
+  }
+  

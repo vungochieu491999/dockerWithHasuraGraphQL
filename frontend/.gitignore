@@ -1,0 +1,7 @@
+dist
+
+/.idea
+
+coverage/
+src/css
+node_modules
