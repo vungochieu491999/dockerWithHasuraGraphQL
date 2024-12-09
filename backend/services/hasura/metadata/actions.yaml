@@ -1,6 +1,12 @@
-actions: []
+actions:
+  - name: getAppName
+    definition:
+      kind: ""
+      handler: '{{ACTION_URL}}'
 custom_types:
   enums: []
-  input_objects: []
-  objects: []
+  input_objects:
+    - name: GetAppNameInput
+  objects:
+    - name: GetAppNameOutPut
   scalars: []

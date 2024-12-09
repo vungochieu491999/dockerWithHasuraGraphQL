@@ -1,19 +1,24 @@
-FROM node:16.13.0-alpine3.13
+
+FROM node:16.13.0-alpine3.14 AS builder
 
 ENV folder=feature
 
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
-
-WORKDIR /home/node/app
-
-COPY package*.json ./
-
-USER node
-
+WORKDIR /usr/src/app
+COPY services/${folder}/package*.json ./
 RUN npm ci
 
-COPY --chown=node:node . .
+WORKDIR /usr/build/app
+COPY services/${folder}/package*.json ./
+RUN npm ci --production
 
+WORKDIR /usr/src/app
+COPY services/${folder} .
 RUN npm run build
+
+FROM node:16.13.0-alpine3.14 AS production
+
+WORKDIR /usr/src/app
+COPY --from=builder /usr/build/app ./
+COPY --from=builder /usr/src/app/dist ./dist
 
 CMD ["npm","start"]

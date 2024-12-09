@@ -1,0 +1,14 @@
+type Query {
+  getAppName(
+    form: GetAppNameInput!
+  ): GetAppNameOutPut
+}
+
+input GetAppNameInput {
+  label: String!
+}
+
+type GetAppNameOutPut {
+  appName: String!
+}
+

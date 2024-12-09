@@ -1,5 +1,6 @@
-import { ApolloServer } from '@apollo/server';
-import { startStandaloneServer } from '@apollo/server/standalone';
+import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
+import { initRouters } from './router';
 
 const books = [
     {
@@ -12,7 +13,7 @@ const books = [
     },
 ];
 
-  // Resolvers define how to fetch the types defined in your schema.
+// Resolvers define how to fetch the types defined in your schema.
 // This resolver retrieves books from the "books" array above.
 const resolvers = {
     Query: {
@@ -40,19 +41,27 @@ const typeDefs = `#graphql
   }
 `;
 
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
-const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-});
-  
-// Passing an ApolloServer instance to the `startStandaloneServer` function:
-//  1. creates an Express app
-//  2. installs your ApolloServer instance as middleware
-//  3. prepares your app to handle incoming requests
-const { url } = await startStandaloneServer(server, {
-listen: { port: 4000 },
-});
-  
-console.log(`🚀  Server ready at: ${url}`);
+export async function initServerExpress() {
+    const PORT = parseInt(process.env.PORT, 9000) || 9000;
+    const HOST = process.env.HOST || "0.0.0.0";
+    const ENV = process.env.NODE_ENV || "development";
+    const app = express();
+    
+    app.get("/healthz", (req, res) => {res.status(200).send("OK")});
+    app.use(express.json());
+    
+    const main = async () => {
+        const server = new ApolloServer({
+            typeDefs,
+            resolvers,
+        });
+        await server.start();
+        server.applyMiddleware({ app });
+    }
+
+    await Promise.all([initRouters(app), main()])
+    
+    app.listen(PORT, HOST, () => {
+        console.log("Express server listening on %d, in %s mode", PORT, ENV);
+    });
+}

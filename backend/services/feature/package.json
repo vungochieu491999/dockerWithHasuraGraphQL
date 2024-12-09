@@ -1,12 +1,12 @@
 {
   "name": "feature",
   "version": "1.0.0",
-  "description": "",
+  "description": "Custom Business Logic",
   "main": "./src/index.ts",
   "scripts": {
     "compile": "tsc",
     "build": "tsc",
-    "start": "node ./dist/index.ts",
+    "start": "node --enable-source-maps ./dist/index.js",
     "dev": "nodemon ./src/index.ts"
   },
   "keywords": [],
